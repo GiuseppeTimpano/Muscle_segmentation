@@ -38,7 +38,7 @@ class ResNet50Backbone(nn.Module):
         self.pretrained = models.resnet50(pretrained=True)
 
         self.pretrained.conv1 = nn.Conv2d(
-            in_channels=1,  # Cambia il numero di canali in ingresso a 1
+            in_channels=1, 
             out_channels=self.pretrained.conv1.out_channels,
             kernel_size=self.pretrained.conv1.kernel_size,
             stride=self.pretrained.conv1.stride,

@@ -3,12 +3,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 from models.init_weights import init_weights
 
-# Conv3D module per U-NET 3plus
+# Conv3D module for U-NET 3plus
 # ks: kernel_size
 class unetConv3d(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm, n=2, ks=3, stride=1, padding=1):
         super(unetConv3d, self).__init__()
-        self.n = n # two convolutional layer as default
+        self.n = n 
         self.ks = ks 
         self.is_batchnorm = is_batchnorm
         self.s = stride
@@ -21,7 +21,7 @@ class unetConv3d(nn.Module):
                     nn.BatchNorm3d(out_size),
                     nn.ReLU(inplace=True)
                 )
-                setattr(self, 'conv%d' %i, conv)  # Usa f-string per generare il nome dinamico del layer
+                setattr(self, 'conv%d' %i, conv)
                 in_size = out_size
         else:
             for i in range(1, n + 1):

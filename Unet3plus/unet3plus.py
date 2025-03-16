@@ -17,7 +17,6 @@ class UNet_3Plus_3D(nn.Module):
         self.feature_scale = feature_scale
         self.n_classes = n_classes
 
-        #filters = [64, 128, 256, 512, 1024]
         filters = [16, 32, 64, 128, 512]
 
         ## -------------Encoder--------------
@@ -187,18 +186,18 @@ class UNet_3Plus_3D(nn.Module):
         ## -------------Encoder-------------#
         h1 = self.conv1(inputs)  # h1->320*320*320
         h2 = self.maxpool1(h1)
-        #print(h2.size())
+        
         h2 = self.conv2(h2)  # h2->160*160*160
         h3 = self.maxpool2(h2)
-        #print(h3.size())
+        
         h3 = self.conv3(h3)  # h3->80*80*80
         h4 = self.maxpool3(h3)
-        #print(h4.size())
+        
         h4 = self.conv4(h4)  # h4->40*40*40
         h5 = self.maxpool4(h4)
-        #print(h5.size())
+        
         hd5 = self.conv5(h5)  # h5->20*20*20
-        #print(hd5.size())
+        
 
         ## -------------Decoder-------------#
         h1_PT_hd4 = self.h1_PT_hd4_relu(self.h1_PT_hd4_bn(self.h1_PT_hd4_conv(self.h1_PT_hd4(h1))))
@@ -214,7 +213,6 @@ class UNet_3Plus_3D(nn.Module):
         h3_PT_hd4 = F.interpolate(h3_PT_hd4, size=target_size, mode='trilinear', align_corners=True)
         h4_Cat_hd4 = F.interpolate(h4_Cat_hd4, size=target_size, mode='trilinear', align_corners=True)
         hd4 = self.relu4d_1(self.bn4d_1(self.conv4d_1(torch.cat((h1_PT_hd4, h2_PT_hd4, h3_PT_hd4, h4_Cat_hd4, hd5_UT_hd4), 1))))
-        #print('h4 dimension: ' + str(hd4.size()))
 
         h1_PT_hd3 = self.h1_PT_hd3_relu(self.h1_PT_hd3_bn(self.h1_PT_hd3_conv(self.h1_PT_hd3(h1))))
         h2_PT_hd3 = self.h2_PT_hd3_relu(self.h2_PT_hd3_bn(self.h2_PT_hd3_conv(self.h2_PT_hd3(h2))))
@@ -228,21 +226,19 @@ class UNet_3Plus_3D(nn.Module):
         h3_Cat_hd3 = F.interpolate(h3_Cat_hd3, size=target_size, mode='trilinear', align_corners=True)
         hd4_UT_hd3 = F.interpolate(hd4_UT_hd3, size=target_size, mode='trilinear', align_corners=True)
         hd3 = self.relu3d_1(self.bn3d_1(self.conv3d_1(torch.cat((h1_PT_hd3, h2_PT_hd3, h3_Cat_hd3, hd4_UT_hd3, hd5_UT_hd3), 1))))
-        #print('h3 dimension: ' + str(hd3.size()))
 
         h1_PT_hd2 = self.h1_PT_hd2_relu(self.h1_PT_hd2_bn(self.h1_PT_hd2_conv(self.h1_PT_hd2(h1))))
         h2_Cat_hd2 = self.h2_Cat_hd2_relu(self.h2_Cat_hd2_bn(self.h2_Cat_hd2_conv(h2)))
         hd3_UT_hd2 = self.hd3_UT_hd2_relu(self.hd3_UT_hd2_bn(self.hd3_UT_hd2_conv(self.hd3_UT_hd2(hd3))))
         hd4_UT_hd2 = self.hd4_UT_hd2_relu(self.hd4_UT_hd2_bn(self.hd4_UT_hd2_conv(self.hd4_UT_hd2(hd4))))
         hd5_UT_hd2 = self.hd5_UT_hd2_relu(self.hd5_UT_hd2_bn(self.hd5_UT_hd2_conv(self.hd5_UT_hd2(hd5))))
-        #print(hd5_UT_hd2.size(), h1_PT_hd2.size())
+        
         target_size = hd5_UT_hd2.size()[2:]
         h1_PT_hd2 = F.interpolate(h1_PT_hd2, size=target_size, mode='trilinear', align_corners=True)
         h2_Cat_hd2 = F.interpolate(h2_Cat_hd2, size=target_size, mode='trilinear', align_corners=True)
         hd3_UT_hd2 = F.interpolate(hd3_UT_hd2, size=target_size, mode='trilinear', align_corners=True)
         hd4_UT_hd2 = F.interpolate(hd4_UT_hd2, size=target_size, mode='trilinear', align_corners=True)
         hd2 = self.relu2d_1(self.bn2d_1(self.conv2d_1(torch.cat((h1_PT_hd2, h2_Cat_hd2, hd3_UT_hd2, hd4_UT_hd2, hd5_UT_hd2), 1))))
-        #print('h2 dimension: ' + str(hd2.size()))
 
         h1_Cat_hd1 = self.h1_Cat_hd1_relu(self.h1_Cat_hd1_bn(self.h1_Cat_hd1_conv(h1)))
         hd2_UT_hd1 = self.hd2_UT_hd1_relu(self.hd2_UT_hd1_bn(self.hd2_UT_hd1_conv(self.hd2_UT_hd1(hd2))))
@@ -256,7 +252,6 @@ class UNet_3Plus_3D(nn.Module):
         hd3_UT_hd1 = F.interpolate(hd3_UT_hd1, size=target_size, mode='trilinear', align_corners=True)
         hd4_UT_hd1 = F.interpolate(hd4_UT_hd1, size=target_size, mode='trilinear', align_corners=True)
         hd1 = self.relu1d_1(self.bn1d_1(self.conv1d_1(torch.cat((h1_Cat_hd1, hd2_UT_hd1, hd3_UT_hd1, hd4_UT_hd1, hd5_UT_hd1), 1))))
-        #print('h1 dimension: ' + str(hd4.size()))
 
-        d1 = self.outconv1(hd1)  # d1->320*320*320
+        d1 = self.outconv1(hd1) 
         return d1

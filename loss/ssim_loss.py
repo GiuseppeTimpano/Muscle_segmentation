@@ -10,7 +10,7 @@ def ssim(pred, label):
     sigma=1.5,
     kernel_size=11,
     reduction='elementwise_mean',
-    data_range=1.0,  # Imposta il range dei dati (ad esempio 1.0 per immagini normalizzate)
+    data_range=1.0,
     k1=0.01,
     k2=0.03,
     return_full_image=False,
@@ -25,7 +25,7 @@ def ssim_single(pred, label):
     device = pred.device
     ssim = StructuralSimilarityIndexMeasure(
         data_range=1.0,
-        kernel_size=3,  # Adatta a immagini piccole
+        kernel_size=3, 
         k1=0.01,
         k2=0.03
     ).to(device)
