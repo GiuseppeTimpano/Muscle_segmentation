@@ -13,3 +13,4 @@ torchgpipe
 monai
 pynrrd
 scikit-learn
+torchsummary

@@ -1,8 +1,8 @@
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
-from models.layers import unetConv3d as unetConv3D
-from models.init_weights import init_weights
+from Unet3plus.layers import unetConv3d as unetConv3D
+from Unet3plus.init_weights import init_weights
 
 '''
 UNET 3+
