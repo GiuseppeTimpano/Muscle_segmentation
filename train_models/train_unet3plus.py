@@ -14,7 +14,7 @@ from monai.transforms import (
 )
 import torch
 import torch.optim as optim
-from models.unet3plusParallel import UNet_3Plus_3D
+from Unet3plus.unet3plus import UNet_3Plus_3D
 from loss.focal_loss import return_focal_loss
 from loss.iou_loss import iou_binary
 from loss.ssim_loss import ssim_single

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.init_weights import init_weights
+from Unet3plus.init_weights import init_weights
 
 # Conv3D module for U-NET 3plus
 # ks: kernel_size
@@ -88,4 +88,3 @@ class unetUp3D_origin(nn.Module):
         for i in range(len(input)):
             outputs0 = torch.cat([outputs0, input[i]], 1)
         return self.conv(outputs0)
-    
