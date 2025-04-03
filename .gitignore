@@ -1,2 +1,8 @@
 # Enviroment
 env/
+
+# folders
+dataset/
+models/best_model_deeplab.pth
+models/best_unet3plusmodel.pth
+
